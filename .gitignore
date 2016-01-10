@@ -60,3 +60,7 @@ Thumbs.db
 
 # Compiled Python
 *.py
+
+# .travis.yml Folders
+coconut/
+cocotest/
