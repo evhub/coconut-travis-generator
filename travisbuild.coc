@@ -95,8 +95,13 @@ cocogen_main = travisgen.builder(main_dir, "python", versions, cocogen$(False))
 test_dir = os.path.join(".", "coconut")
 cocogen_test = travisgen.builder(test_dir, "python", versions, cocogen$(True))
 
+def ensure_dir(directory):
+    """Ensures that a directory exists."""
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
 if __name__ == "__main__":
-    os.makedirs(main_dir)
+    ensure_dir(main_dir)
     cocogen_main()
-    os.makedirs(test_dir)
+    ensure_dir(test_dir)
     cocogen_test()
