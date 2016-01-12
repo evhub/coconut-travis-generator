@@ -92,7 +92,7 @@ def cocotravis(test, version):
         "coconut src/cocotest/util.coc folder_build/cocotest --strict --package",
         "python -tt folder_build/runner.py",
 
-        "mkdir -p run_build/cocotest; cp -r folder_build run_build; cp src/runner.coc run_build; pushd run_build",
+        "mkdir -p run_build/cocotest; cp -r folder_build run_build; cp folder_build/cocotest run_build/cocotest; cp src/runner.coc run_build; pushd run_build",
         "coconut --run runner.coc --nowrite --strict",
         "popd",
 
