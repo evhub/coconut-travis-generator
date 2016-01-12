@@ -49,6 +49,8 @@ def cocotravis(test, version):
         "cp -r src src_target",
         "rm src/cocotest/py"+version_num+"_test.coc"
     ])
+    if py33:
+        install_cmds.append("rm src/cocotest/py33_test.coc")
 
     script_cmds = [
         r'''coconut --version''',
