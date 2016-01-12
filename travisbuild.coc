@@ -2,11 +2,12 @@ import travisgen
 import os
 import os.path
 
-versions = ["2.6", "2.7", "pypy", "3.3", "3.4", "3.5"]
+versions = ["2.6", "2.7", "pypy", "3.2", "3.3", "3.4", "3.5", "pypy3"]
 py2_versions = ["2.6", "2.7", "pypy"]
 noipy_versions = ["2.6"]
+nopy33_versions = ["3.2", "pypy3"]
 
-def cocogen(test, version):
+def cocotravis(test, version):
     """Generates .travis.yml test commands for Coconut and Cocotest."""
     if version in py2_versions:
         py2 = True
@@ -20,6 +21,10 @@ def cocogen(test, version):
         ipy = False
     else:
         ipy = True
+    if version in py2_versions or version in nopy33_versions:
+        py33 = False
+    else:
+        py33 = True
 
     if test:
         install_cmds = [
@@ -37,6 +42,8 @@ def cocogen(test, version):
         ]
     if ipy:
         install_cmds.append("pip install ipython")
+    if not py33:
+        install_cmds.append("rm src/cocotest/py33_test.coc")
     install_cmds.extend([
         "rm src/cocotest/py"+other_version_num+"_test.coc",
         "cp -r src src_target",
@@ -62,38 +69,57 @@ def cocogen(test, version):
         "coconut src/cocotest/main.coc file_build/cocotest --strict",
         "coconut src/cocotest/util.coc file_build/cocotest --strict",
         "coconut src_target/cocotest/py"+version_num+"_test.coc file_build/cocotest --strict --target "+version_num,
+    ])
+    if py33:
+        script_cmds.append("coconut src_target/cocotest/py33_test.coc file_build/cocotest --strict --target "+version_num)
+    script_cmds.extend([
         "python -tt file_build/runner.py",
-
         "coconut src file_build --strict --standalone",
         "python -tt file_build/runner.py",
 
-        "coconut src/cocotest run_build/cocotest --strict",
-        "cp src/runner.coc run_build/runner.coc",
-        "cp file_build/cocotest/py"+version_num+"_test.py run_build/cocotest/py"+version_num+"_test.py",
-        "cd run_build",
-        "coconut --run runner.coc --nowrite --strict",
-        "cd ..",
-
         "coconut src folder_build --strict",
         "coconut src_target/cocotest/py"+version_num+"_test.coc folder_build/cocotest --strict --package --target "+version_num,
+    ])
+    if py33:
+        script_cmds.append("coconut src_target/cocotest/py33_test.coc folder_build/cocotest --strict --package --target "+version_num)
+    script_cmds.extend([
         "python -tt folder_build/runner.py",
-
         "coconut src/runner.coc folder_build --strict --package",
         "coconut src/cocotest/__init__.coc folder_build/cocotest --strict --package",
         "coconut src/cocotest/main.coc folder_build/cocotest --strict --package",
         "coconut src/cocotest/util.coc folder_build/cocotest --strict --package",
         "python -tt folder_build/runner.py",
 
+        "mkdir -p run_build/cocotest; cp -r folder_build run_build; cd run_build",
+        "coconut --run runner.coc --nowrite --strict",
+        "cd ..",
+
         "coconut src force_build --strict --force",
-        "cp folder_build/cocotest/py"+version_num+"_test.py force_build/cocotest/py"+version_num+"_test.py",
+        "coconut src_target/cocotest/py"+version_num+"_test.coc force_build/cocotest --strict --package --force --target "+version_num,
+    ])
+    if py33:
+        script_cmds.append("coconut src_target/cocotest/py33_test.coc force_build/cocotest --strict --package --force --target "+version_num)
+    script_cmds.extend([
         "python -tt force_build/runner.py",
         "coconut src force_build --strict",
         "python -tt force_build/runner.py",
         "coconut src force_build --strict --force",
         "python -tt force_build/runner.py",
 
+        "coconut src strictless_build",
+        "coconut src_target/cocotest/py"+version_num+"_test.coc autopep8_build/cocotest --package --autopep8 --target "+version_num,
+    ])
+    if py33:
+        script_cmds.append("coconut src_target/cocotest/py33_test.coc autopep8_build/cocotest --package --autopep8 --target "+version_num)
+    script_cmds.extend([
+        "python -tt strictless_build/runner.py",
+
         "coconut src autopep8_build --strict --autopep8",
-        "cp folder_build/cocotest/py"+version_num+"_test.py autopep8_build/cocotest/py"+version_num+"_test.py",
+        "coconut src_target/cocotest/py"+version_num+"_test.coc autopep8_build/cocotest --strict --package --autopep8 --target "+version_num,
+    ])
+    if py33:
+        script_cmds.append("coconut src_target/cocotest/py33_test.coc autopep8_build/cocotest --strict --package --autopep8 --target "+version_num)
+    script_cmds.extend([
         "python -tt autopep8_build/runner.py",
 
         "coconut src_target target_build --strict --display --target "+version_num,
@@ -103,11 +129,11 @@ def cocogen(test, version):
     return install_cmds, script_cmds
 
 main_dir = os.path.join("..", "cocotest")
-cocogen_main = travisgen.builder(main_dir, "python", versions, cocogen$(False))
+cocotravis_main = travisgen.builder(main_dir, "python", versions, cocotravis$(False))
 
 test_dir = os.path.join("..", "coconut")
-cocogen_test = travisgen.builder(test_dir, "python", versions, cocogen$(True))
+cocotravis_test = travisgen.builder(test_dir, "python", versions, cocotravis$(True))
 
 if __name__ == "__main__":
-    cocogen_main()
-    cocogen_test()
+    cocotravis_main()
+    cocotravis_test()
