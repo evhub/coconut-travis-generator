@@ -107,18 +107,18 @@ def cocotravis(test, version):
         "python -tt force_build/runner.py",
 
         "coconut src strictless_build",
-        "coconut src_target/cocotest/py"+version_num+"_test.coc autopep8_build/cocotest --package --autopep8 --target "+version_num,
+        "coconut src_target/cocotest/py"+version_num+"_test.coc strictless_build/cocotest --package --target "+version_num,
     ])
     if py33:
-        script_cmds.append("coconut src_target/cocotest/py33_test.coc autopep8_build/cocotest --package --autopep8 --target "+version_num)
+        script_cmds.append("coconut src_target/cocotest/py33_test.coc strictless_build/cocotest --package --target "+version_num)
     script_cmds.extend([
         "python -tt strictless_build/runner.py",
 
         "coconut src autopep8_build --strict --autopep8",
-        "coconut src_target/cocotest/py"+version_num+"_test.coc autopep8_build/cocotest --strict --package --autopep8 --target "+version_num,
+        "coconut src_target/cocotest/py"+version_num+"_test.coc autopep8_build/cocotest --strict --package --target "+version_num+" --autopep8",
     ])
     if py33:
-        script_cmds.append("coconut src_target/cocotest/py33_test.coc autopep8_build/cocotest --strict --package --autopep8 --target "+version_num)
+        script_cmds.append("coconut src_target/cocotest/py33_test.coc autopep8_build/cocotest --strict --package --target "+version_num+" --autopep8")
     script_cmds.extend([
         "python -tt autopep8_build/runner.py",
 
