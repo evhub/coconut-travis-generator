@@ -4,7 +4,7 @@ import os.path
 
 versions = ["2.6", "2.7", "pypy", "3.2", "3.3", "3.4", "3.5", "pypy3"]
 py2_versions = ["2.6", "2.7", "pypy"]
-noipy_versions = ["2.6"]
+noipy_versions = ["2.6", "3.2", "pypy3"]
 nopy33_versions = ["3.2", "pypy3"]
 
 def cocotravis(test, version):
