@@ -46,6 +46,7 @@ def cocotravis(test, version):
         install_cmds.append("rm src/cocotest/py33_test.coc")
     install_cmds.extend([
         "rm src/cocotest/py"+other_version_num+"_test.coc",
+        "mkdir src_target",
         "cp -r src/* src_target",
         "rm src/cocotest/py"+version_num+"_test.coc"
     ])
