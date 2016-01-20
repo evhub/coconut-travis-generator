@@ -63,7 +63,10 @@ def cocotravis(test, version):
     else:
         script_cmds.append(r'''python -c "from coconut.convenience import parse; exec(parse('assert \'__coconut__\' in \`globals\`; msg = \'<success>\'; pmsg = print\$(msg); pmsg()'))"''')
     if ipy:
-        script_cmds.append(r'''ipython --ext coconut -c "%coconut assert '__coconut__' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()"''')
+        script_cmds.extend([
+            r'''ipython --ext coconut -c "%coconut assert '__coconut__' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()"''',
+            "coconut --ipython"
+            ])
     script_cmds.extend([
         "coconut prisoner --strict",
 
