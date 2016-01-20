@@ -41,7 +41,7 @@ def cocotravis(test, version):
             "git clone https://github.com/evhub/prisoner.git"
         ]
     if ipy:
-        install_cmds.append("pip install ipython")
+        install_cmds.append("pip install jupyter")
     if not py33:
         install_cmds.append("rm src/cocotest/py33_test.coc")
     install_cmds.extend([
@@ -65,7 +65,7 @@ def cocotravis(test, version):
     if ipy:
         script_cmds.extend([
             r'''ipython --ext coconut -c "%coconut assert '__coconut__' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()"''',
-            "coconut --ipython"
+            "coconut --jupyter"
             ])
     script_cmds.extend([
         "coconut prisoner --strict",
