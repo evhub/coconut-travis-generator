@@ -65,6 +65,7 @@ def cocotravis(test, version):
         "coconut src/cocotest/__init__.coc file_build/cocotest --strict",
         "coconut src/cocotest/main.coc file_build/cocotest --strict",
         "coconut src/cocotest/util.coc file_build/cocotest --strict",
+        "coconut src/cocotest/tutorial.coc file_build/cocotest --strict",
         "coconut src_target/cocotest/py"+version_num+"_test.coc file_build/cocotest --strict --target "+version_num,
         "python file_build/runner.py",
         "coconut src file_build --strict --standalone",
@@ -77,6 +78,7 @@ def cocotravis(test, version):
         "coconut src/cocotest/__init__.coc folder_build/cocotest --strict --package",
         "coconut src/cocotest/main.coc folder_build/cocotest --strict --package",
         "coconut src/cocotest/util.coc folder_build/cocotest --strict --package",
+        "coconut src/cocotest/tutorial.coc folder_build/cocotest --strict --package",
         "python folder_build/runner.py",
 
         "mkdir -p run_build/cocotest",
