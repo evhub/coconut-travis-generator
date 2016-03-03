@@ -27,7 +27,8 @@ def cocotravis(test, version):
             "pip install autopep8",
             "git clone https://github.com/evhub/cocotest.git",
             "cd cocotest",
-            "git clone https://github.com/evhub/prisoner.git"
+            "git clone https://github.com/evhub/prisoner.git",
+            "git clone https://github.com/evhub/pyston.git"
         ]
     else:
         install_cmds = [
@@ -60,6 +61,7 @@ def cocotravis(test, version):
             ])
     script_cmds.extend([
         "coconut prisoner --strict",
+        "coconut pyston",
 
         "coconut src/runner.coc file_build --strict",
         "coconut src/cocotest/__init__.coc file_build/cocotest --strict",
