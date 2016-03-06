@@ -3,6 +3,7 @@ import os
 import os.path
 
 versions = ["2.6", "2.7", "pypy", "3.2", "3.3", "3.4", "3.5", "pypy3"]
+pypy_versions = ["pypy", "pypy3"]
 py2_versions = ["2.6", "2.7", "pypy"]
 noipy_versions = ["2.6", "3.2", "pypy3"]
 
@@ -16,10 +17,8 @@ def cocotravis(test, version):
         py2 = False
         version_num = "3"
         other_version_num = "2"
-    if version in noipy_versions:
-        ipy = False
-    else:
-        ipy = True
+    ipy = version not in noipy_versions
+    pypy = version in pypy_versions
 
     if test:
         install_cmds = [
@@ -57,9 +56,12 @@ def cocotravis(test, version):
             r'''ipython --ext coconut -c "%coconut assert '__coconut__' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()"''',
             "coconut --jupyter"
             ])
+    if pypy:
+        script_cmds.append("coconut pyston")
+    else:
+        script_cmds.append("coconut pyston --recursionlimit 1100")
     script_cmds.extend([
         "coconut prisoner --strict",
-        "coconut pyston",
 
         "coconut src/runner.coc file_build --strict",
         "coconut src/cocotest/__init__.coc file_build/cocotest --strict",
