@@ -59,7 +59,7 @@ def cocotravis(test, version):
             ])
     script_cmds.extend([
         "coconut prisoner --strict",
-        "coconut pyston --recursionlimit 1100",
+        "coconut pyston",
 
         "coconut src/runner.coc file_build --strict",
         "coconut src/cocotest/__init__.coc file_build/cocotest --strict",
