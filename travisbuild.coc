@@ -57,7 +57,12 @@ def cocotravis(test, version):
             "coconut --jupyter"
             ])
     if pypy:
-        script_cmds.append("coconut pyston")
+        script_cmds.extend([
+            "coconut pyston",
+            "pushd pyston",
+            "python runner.py",
+            "popd"
+        ])
     else:
         script_cmds.append("coconut pyston --recursionlimit 1100")
     script_cmds.extend([
