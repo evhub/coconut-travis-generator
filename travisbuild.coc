@@ -35,6 +35,8 @@ def cocotravis(test, version):
             "pip install autopep8",
             "git clone https://github.com/evhub/prisoner.git"
         ]
+    if py2:
+        install_cmds.append("pip install futures")
     if ipy:
         install_cmds.append("pip install jupyter")
     install_cmds.extend([
