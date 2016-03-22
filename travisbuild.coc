@@ -71,6 +71,9 @@ def cocotravis(test, version):
     script_cmds.extend([
         "coconut prisoner --strict",
 
+        "coconut extras.coc",
+        "python extras.py",
+
         "coconut src/runner.coc file_build --strict",
         "coconut src/cocotest/__init__.coc file_build/cocotest --strict",
         "coconut src/cocotest/main.coc file_build/cocotest --strict",
