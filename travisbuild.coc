@@ -115,6 +115,10 @@ def cocotravis(test, version):
         "coconut src_target/cocotest/py"+version_num+"_test.coc autopep8_build/cocotest --strict --package --target "+version_num+" --autopep8",
         "python autopep8_build/runner.py",
 
+        "coconut src minify_build --strict --minify",
+        "coconut src_target/cocotest/py"+version_num+"_test.coc minify_build/cocotest --strict --package --target "+version_num+" --minify",
+        "python minify_build/runner.py",
+
         "coconut src_target target_build --strict --display --target "+version_num,
         "python target_build/runner.py"
     ])
