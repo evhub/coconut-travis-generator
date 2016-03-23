@@ -122,6 +122,14 @@ def cocotravis(test, version):
         "coconut src_target/cocotest/py"+version_num+"_test.coc minify_build/cocotest --strict --package --target "+version_num+" --minify",
         "python minify_build/runner.py",
 
+        "coconut src linenumbers_build --strict --linenumbers",
+        "coconut src_target/cocotest/py"+version_num+"_test.coc linenumbers_build/cocotest --strict --package --target "+version_num+" --linenumbers",
+        "python linenumbers_build/runner.py",
+
+        "coconut src lns_min_build --strict --linenumbers --minify",
+        "coconut src_target/cocotest/py"+version_num+"_test.coc lns_min_build/cocotest --strict --package --target "+version_num+" --linenumbers --minify",
+        "python lns_min_build/runner.py",
+
         "coconut src_target target_build --strict --display --target "+version_num,
         "python target_build/runner.py"
     ])
