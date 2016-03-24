@@ -156,14 +156,32 @@ def cocotravis(test, version):
 
         "coconut src linenumbers_build --strict --linenumbers",
         "coconut src_target/cocotest/py"+version_num+"_test.coc linenumbers_build/cocotest --strict --package --target "+version_num+" --linenumbers",
+    ])
+    if py35:
+        script_cmds.append(
+        "coconut src_target/cocotest/py35_test.coc linenumbers_build/cocotest --strict --package --target 3 --linenumbers",
+        )
+    script_cmds.extend([
         "python linenumbers_build/runner.py",
 
         "coconut src lns_min_build --strict --linenumbers --minify",
         "coconut src_target/cocotest/py"+version_num+"_test.coc lns_min_build/cocotest --strict --package --target "+version_num+" --linenumbers --minify",
+    ])
+    if py35:
+        script_cmds.append(
+        "coconut src_target/cocotest/py35_test.coc lns_min_build/cocotest --strict --package --target 3 --linenumbers --minify",
+        )
+    script_cmds.extend([
         "python lns_min_build/runner.py",
 
         "coconut src autopep8_build --strict --autopep8",
         "coconut src_target/cocotest/py"+version_num+"_test.coc autopep8_build/cocotest --strict --package --target "+version_num+" --autopep8",
+    ])
+    if py35:
+        script_cmds.append(
+        "coconut src_target/cocotest/py35_test.coc autopep8_build/cocotest --strict --package --target 3 --autopep8",
+        )
+    script_cmds.extend([
         "python autopep8_build/runner.py",
 
         "coconut src_target target_build --strict --display --target "+version_num,
