@@ -55,13 +55,13 @@ def cocotravis(test, version):
     script_cmds = [
         "coconut --version --color cyan",
         "coconut --help",
-        r'''coconut --strict --display --code "assert '__coconut__' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()"''',
-        r'''echo "assert '__coconut__' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()" | coconut --strict --display''',
-        r'''python -c "from coconut.convenience import parse; exec(parse('assert \'__coconut__\' in \`globals\`; msg = \'<success>\'; pmsg = print\$(msg); pmsg()'))"'''
+        r'''coconut --strict --display --code "assert '_coconut' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()"''',
+        r'''echo "assert '_coconut' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()" | coconut --strict --display''',
+        r'''python -c "from coconut.convenience import parse; exec(parse('assert \'_coconut\' in \`globals\`; msg = \'<success>\'; pmsg = print\$(msg); pmsg()'))"'''
     ]
     if ipy:
         script_cmds.extend([
-            r'''ipython --ext coconut -c "%coconut assert '__coconut__' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()"''',
+            r'''ipython --ext coconut -c "%coconut assert '_coconut' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()"''',
             "coconut --jupyter"
             ])
     if pypy:
