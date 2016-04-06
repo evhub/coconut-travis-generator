@@ -184,6 +184,9 @@ def cocotravis(test, version):
     script_cmds.extend([
         "python autopep8_build/runner.py",
 
+        "coconut src_target sys_build --strict --target sys",
+        "python sys_build/runner.py"
+
         "coconut src_target target_build --strict --display --target "+target,
         "python target_build/runner.py"
     ])
