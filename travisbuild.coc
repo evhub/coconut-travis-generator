@@ -73,7 +73,7 @@ def cocotravis(test, version):
                 "popd"
             ])
     else:
-        script_cmds.append("coconut pyston --recursionlimit 1100")
+        script_cmds.append("coconut pyston --recursionlimit 1200")
     script_cmds.extend([
         "coconut prisoner --strict",
 
