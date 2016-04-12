@@ -12,7 +12,7 @@ py2_versions = ["2.6", "2.7", "pypy"]
 noipy_versions = ["2.6", "3.2", "pypy3"]
 py35_versions = ["3.5"]
 
-def cocotravis(test, version):
+def cocotravis(main, version):
     """Generates .travis.yml test commands for Coconut and Cocotest."""
     target = version_to_target[version] if version in version_to_target else version
     pypy = version in pypy_versions
@@ -22,21 +22,23 @@ def cocotravis(test, version):
     py35 = version in py35_versions
     ipy = version not in noipy_versions
 
-    if test:
+    if main:
         install_cmds = [
             "pip install .",
-            "pip install autopep8",
             "git clone https://github.com/evhub/cocotest.git",
             "cd cocotest",
-            "git clone https://github.com/evhub/prisoner.git",
-            "git clone https://github.com/evhub/pyston.git"
+            "git clone https://github.com/evhub/prisoner.git"
         ]
     else:
         install_cmds = [
-            "pip install coconut",
-            "pip install autopep8",
-            "git clone https://github.com/evhub/prisoner.git"
+            "git clone -b develop https://github.com/evhub/coconut.git",
+            "pip install ./coconut"
         ]
+    install_cmds.extend([
+        "pip install autopep8",
+        "git clone https://github.com/evhub/prisoner.git",
+        "git clone https://github.com/evhub/pyston.git"
+    ])
     if py2:
         install_cmds.append("pip install futures")
     if ipy:
