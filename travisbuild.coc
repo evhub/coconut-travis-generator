@@ -26,8 +26,7 @@ def cocotravis(main, version):
         install_cmds = [
             "pip install .",
             "git clone https://github.com/evhub/cocotest.git",
-            "cd cocotest",
-            "git clone https://github.com/evhub/prisoner.git"
+            "cd cocotest"
         ]
     else:
         install_cmds = [
