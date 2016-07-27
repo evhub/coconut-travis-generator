@@ -11,6 +11,7 @@ pypy_versions = ["pypy", "pypy3"]
 py2_versions = ["2.6", "2.7", "pypy"]
 noipy_versions = ["2.6", "3.2", "pypy3"]
 py35_versions = ["3.5"]
+py26_versions = ["2.6"]
 
 def cocotravis(main, version):
     """Generates .travis.yml test commands for Coconut and Cocotest."""
@@ -21,6 +22,7 @@ def cocotravis(main, version):
     other_version_num = "3" if py2 else "2"
     py35 = version in py35_versions
     ipy = version not in noipy_versions
+    py26 = version in py26_versions
 
     if main:
         install_cmds = [
@@ -44,6 +46,8 @@ def cocotravis(main, version):
         install_cmds.append("pip install jupyter")
     if not py35:
         install_cmds.append("rm src/cocotest/py35_test.coco")
+    if py26:
+        install_cmds.append("rm src/cocotest/non_py26_test.coco")
     install_cmds.extend([
         "rm src/cocotest/py"+other_version_num+"_test.coco",
         "mkdir src_target",
@@ -52,18 +56,20 @@ def cocotravis(main, version):
     ])
     if py35:
         install_cmds.append("rm src/cocotest/py35_test.coco")
+    if not py26:
+        install_cmds.append("rm src/cocotest/non_py26_test.coco")
 
     script_cmds = [
         "coconut --version --color cyan",
         "coconut --help",
         r'''coconut --strict --display --code "assert '_coconut' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()"''',
         r'''echo "assert '_coconut' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()" | coconut --strict --display''',
-        r'''python -c "from coconut.convenience import parse; exec(parse('assert \'_coconut\' in \`globals\`; msg = \'<success>\'; pmsg = print\$(msg); pmsg()'))"'''
+        r'''python -c "from coconut.convenience import parse; exec(parse('assert \'_coconut\' in \`globals\`; msg = \'<success>\'; pmsg = print\$(msg); pmsg()'))"''',
     ]
     if ipy:
         script_cmds.extend([
             r'''ipython --ext coconut -c "%coconut assert '_coconut' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()"''',
-            "coconut --jupyter"
+            "coconut --jupyter",
             ])
     if pypy:
         script_cmds.append("coconut pyston")
@@ -71,7 +77,7 @@ def cocotravis(main, version):
             script_cmds.extend([
                 "pushd pyston",
                 "python runner.py",
-                "popd"
+                "popd",
             ])
     else:
         script_cmds.append("coconut pyston --recursionlimit 1200")
@@ -88,10 +94,11 @@ def cocotravis(main, version):
         "coconut src/cocotest/util.coco file_build/cocotest --strict",
         "coconut src/cocotest/tutorial.coco file_build/cocotest --strict",
         "coconut src_target/cocotest/py"+version_num+"_test.coco file_build/cocotest --strict --target "+target,
+        "coconut src_target/cocotest/non_py26_test.coco file_build/cocotest --strict --target "+target,
     ])
     if py35:
         script_cmds.append(
-        "coconut src_target/cocotest/py35_test.coco file_build/cocotest --strict --target "+target+""
+        "coconut src_target/cocotest/py35_test.coco file_build/cocotest --strict --target "+target,
         )
     script_cmds.extend([
         "python file_build/runner.py",
@@ -100,10 +107,11 @@ def cocotravis(main, version):
 
         "coconut src folder_build --strict",
         "coconut src_target/cocotest/py"+version_num+"_test.coco folder_build/cocotest --strict --package --target "+target,
+        "coconut src_target/cocotest/non_py26_test.coco folder_build/cocotest --strict --package --target "+target,
     ])
     if py35:
         script_cmds.append(
-        "coconut src_target/cocotest/py35_test.coco folder_build/cocotest --strict --package --target "+target+""
+        "coconut src_target/cocotest/py35_test.coco folder_build/cocotest --strict --package --target "+target,
         )
     script_cmds.extend([
         "python folder_build/runner.py",
@@ -125,10 +133,11 @@ def cocotravis(main, version):
 
         "coconut src force_build --strict --force",
         "coconut src_target/cocotest/py"+version_num+"_test.coco force_build/cocotest --strict --package --force --target "+target,
+        "coconut src_target/cocotest/non_py26_test.coco force_build/cocotest --strict --package --force --target "+target,
     ])
     if py35:
         script_cmds.append(
-        "coconut src_target/cocotest/py35_test.coco force_build/cocotest --strict --package --force --target "+target+""
+        "coconut src_target/cocotest/py35_test.coco force_build/cocotest --strict --package --force --target "+target,
         )
     script_cmds.extend([
         "python force_build/runner.py",
@@ -139,16 +148,18 @@ def cocotravis(main, version):
 
         "coconut src strictless_build",
         "coconut src_target/cocotest/py"+version_num+"_test.coco strictless_build/cocotest --package --target "+target,
+        "coconut src_target/cocotest/non_py26_test.coco strictless_build/cocotest --package --target "+target,
     ])
     if py35:
         script_cmds.append(
-        "coconut src_target/cocotest/py35_test.coco strictless_build/cocotest --package --target "+target+""
+        "coconut src_target/cocotest/py35_test.coco strictless_build/cocotest --package --target "+target,
         )
     script_cmds.extend([
         "python strictless_build/runner.py",
 
         "coconut src minify_build --strict --minify",
         "coconut src_target/cocotest/py"+version_num+"_test.coco minify_build/cocotest --strict --package --target "+target+" --minify",
+        "coconut src_target/cocotest/non_py26_test.coco minify_build/cocotest --strict --package --target "+target+" --minify",
     ])
     if py35:
         script_cmds.append(
@@ -159,6 +170,7 @@ def cocotravis(main, version):
 
         "coconut src linenumbers_build --strict --linenumbers",
         "coconut src_target/cocotest/py"+version_num+"_test.coco linenumbers_build/cocotest --strict --package --target "+target+" --linenumbers",
+        "coconut src_target/cocotest/non_py26_test.coco linenumbers_build/cocotest --strict --package --target "+target+" --linenumbers",
     ])
     if py35:
         script_cmds.append(
@@ -169,6 +181,7 @@ def cocotravis(main, version):
 
         "coconut src lns_min_build --strict --linenumbers --minify",
         "coconut src_target/cocotest/py"+version_num+"_test.coco lns_min_build/cocotest --strict --package --target "+target+" --linenumbers --minify",
+        "coconut src_target/cocotest/non_py26_test.coco lns_min_build/cocotest --strict --package --target "+target+" --linenumbers --minify",
     ])
     if py35:
         script_cmds.append(
@@ -179,6 +192,7 @@ def cocotravis(main, version):
 
         "coconut src autopep8_build --strict --autopep8",
         "coconut src_target/cocotest/py"+version_num+"_test.coco autopep8_build/cocotest --strict --package --target "+target+" --autopep8",
+        "coconut src_target/cocotest/non_py26_test.coco autopep8_build/cocotest --strict --package --target "+target+" --autopep8",
     ])
     if py35:
         script_cmds.append(
@@ -191,7 +205,7 @@ def cocotravis(main, version):
         "python sys_build/runner.py",
 
         "coconut src_target target_build --strict --display --target "+target,
-        "python target_build/runner.py"
+        "python target_build/runner.py",
     ])
 
     return install_cmds, script_cmds
