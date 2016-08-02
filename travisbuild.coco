@@ -11,7 +11,6 @@ pypy_versions = ["pypy", "pypy3"]
 py2_versions = ["2.6", "2.7", "pypy"]
 noipy_versions = ["2.6", "3.2", "pypy3"]
 py35_versions = ["3.5"]
-py26_versions = ["2.6"]
 
 def cocotravis(main, version):
     """Generates .travis.yml test commands for Coconut and Cocotest."""
@@ -22,7 +21,6 @@ def cocotravis(main, version):
     other_version_num = "3" if py2 else "2"
     py35 = version in py35_versions
     ipy = version not in noipy_versions
-    py26 = version in py26_versions
 
     if main:
         install_cmds = [
