@@ -46,18 +46,15 @@ def cocotravis(main, version):
         install_cmds.append("pip install jupyter")
     if not py35:
         install_cmds.append("rm src/cocotest/py35_test.coco")
-    if py26:
-        install_cmds.append("rm src/cocotest/non_py26_test.coco")
     install_cmds.extend([
         "rm src/cocotest/py"+other_version_num+"_test.coco",
         "mkdir src_target",
         "cp -r src/* src_target",
-        "rm src/cocotest/py"+version_num+"_test.coco"
+        "rm src/cocotest/py"+version_num+"_test.coco",
+        "rm src/cocotest/non_py26_test.coco"
     ])
     if py35:
         install_cmds.append("rm src/cocotest/py35_test.coco")
-    if not py26:
-        install_cmds.append("rm src/cocotest/non_py26_test.coco")
 
     script_cmds = [
         "coconut --version --color cyan",
