@@ -35,14 +35,16 @@ def cocotravis(main, version):
         ]
     install_cmds += [
         "pip install autopep8",
-        "pip install pygments",
         "git clone https://github.com/evhub/prisoner.git",
         "git clone https://github.com/evhub/pyston.git",
     ]
     if py2:
         install_cmds.append("pip install futures")
     if ipy:
-        install_cmds.append("pip install jupyter")
+        install_cmds += [
+            "pip install pygments",
+            "pip install jupyter",
+        ]
     if not py35:
         install_cmds.append("rm src/cocotest/py35_test.coco")
     install_cmds += [
