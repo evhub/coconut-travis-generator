@@ -174,17 +174,6 @@ def cocotravis(main, version):
     script_cmds.extend([
         "python linenumbers_build/runner.py",
 
-        "coconut src lns_min_build --strict --linenumbers --minify",
-        "coconut src_target/cocotest/py"+version_num+"_test.coco lns_min_build/cocotest --strict --package --target "+target+" --linenumbers --minify",
-        "coconut src_target/cocotest/non_py26_test.coco lns_min_build/cocotest --strict --package --target "+target+" --linenumbers --minify",
-    ])
-    if py35:
-        script_cmds.append(
-        "coconut src_target/cocotest/py35_test.coco lns_min_build/cocotest --strict --package --target "+target+" --linenumbers --minify",
-        )
-    script_cmds.extend([
-        "python lns_min_build/runner.py",
-
         "coconut src autopep8_build --strict --autopep8",
         "coconut src_target/cocotest/py"+version_num+"_test.coco autopep8_build/cocotest --strict --package --target "+target+" --autopep8",
         "coconut src_target/cocotest/non_py26_test.coco autopep8_build/cocotest --strict --package --target "+target+" --autopep8",
