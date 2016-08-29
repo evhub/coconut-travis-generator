@@ -70,7 +70,10 @@ def cocotravis(main, version):
             "coconut --jupyter",
             ]
     if pypy:
-        script_cmds.append("coconut pyston --recursionlimit 500")
+        script_cmds += [
+            "coconut pyston --recursionlimit 500",
+            "coconut prisoner --strict --recursionlimit 500",
+            ]
         if ipy:
             script_cmds += [
                 "pushd pyston",
@@ -78,10 +81,11 @@ def cocotravis(main, version):
                 "popd",
             ]
     else:
-        script_cmds.append("coconut pyston --recursionlimit 1300")
+        script_cmds += [
+            "coconut pyston --recursionlimit 1300",
+            "coconut prisoner --strict",
+            ]
     script_cmds += [
-        "coconut prisoner --strict",
-
         "coconut extras.coco --run --strict",
         "python extras.py",
 
