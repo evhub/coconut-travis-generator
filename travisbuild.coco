@@ -34,7 +34,6 @@ def cocotravis(main, version):
             "pip install ./coconut",
         ]
     install_cmds += [
-        "pip install autopep8",
         "git clone https://github.com/evhub/prisoner.git",
         "git clone https://github.com/evhub/pyston.git",
     ]
@@ -192,16 +191,16 @@ def cocotravis(main, version):
     script_cmds += [
         "python keeplines_build/runner.py",
 
-        "coconut src autopep8_build --strict --autopep8",
-        "coconut src_target/cocotest/py"+version_num+"_test.coco autopep8_build/cocotest --strict --package --target "+target+" --autopep8",
-        "coconut src_target/cocotest/non_py26_test.coco autopep8_build/cocotest --strict --package --target "+target+" --autopep8",
+        "coconut src jobs0_build --strict --jobs 0",
+        "coconut src_target/cocotest/py"+version_num+"_test.coco jobs0_build/cocotest --strict --package --target "+target+" --jobs 0",
+        "coconut src_target/cocotest/non_py26_test.coco jobs0_build/cocotest --strict --package --target "+target+" --jobs 0",
     ]
     if py35:
         script_cmds.append(
-        "coconut src_target/cocotest/py35_test.coco autopep8_build/cocotest --strict --package --target "+target+" --autopep8",
+        "coconut src_target/cocotest/py35_test.coco jobs0_build/cocotest --strict --package --target "+target+" --jobs 0",
         )
     script_cmds += [
-        "python autopep8_build/runner.py",
+        "python jobs0_build/runner.py",
 
         "coconut src_target sys_build --strict --target sys",
         "python sys_build/runner.py",
