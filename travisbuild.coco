@@ -70,8 +70,8 @@ def cocotravis(main, version):
             ]
     if pypy:
         script_cmds += [
-            "coconut pyston --recursionlimit 500",
-            "coconut prisoner --strict --recursionlimit 500",
+            "coconut pyston",
+            "coconut prisoner --strict",
             ]
         if ipy:
             script_cmds += [
@@ -81,7 +81,7 @@ def cocotravis(main, version):
             ]
     else:
         script_cmds += [
-            "coconut pyston --recursionlimit 1300",
+            "coconut pyston",
             "coconut prisoner --strict",
             ]
     script_cmds += [
