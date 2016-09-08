@@ -57,7 +57,7 @@ def cocotravis(main, version):
         install_cmds.append("rm src/cocotest/py35_test.coco")
 
     script_cmds = [
-        "coconut --version --color cyan",
+        "coconut --version",
         "coconut --help",
         r'''coconut --strict --display --code "assert '_coconut' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()"''',
         r'''echo "assert '_coconut' in \`globals\`; msg = '<success>'; pmsg = print\$(msg); pmsg()" | coconut --strict --display''',
