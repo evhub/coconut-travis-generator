@@ -32,7 +32,6 @@ def cocotravis(main, version):
         install_cmds = [
             "git clone -b develop https://github.com/evhub/coconut.git",
             "pushd coconut",
-            "popd",
         ]
     if ipy:
         install_cmds.append("pip install -r requirements-jupyter.txt")
