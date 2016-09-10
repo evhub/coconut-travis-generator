@@ -24,26 +24,24 @@ def cocotravis(main, version):
 
     if main:
         install_cmds = [
-            "pip install .",
             "git clone https://github.com/evhub/cocotest.git",
             "cd cocotest",
+            "pushd ..",
         ]
     else:
         install_cmds = [
             "git clone -b develop https://github.com/evhub/coconut.git",
-            "pip install ./coconut",
+            "pushd coconut",
+            "popd",
         ]
+    if ipy:
+        install_cmds.append("pip install -r requirements-jupyter.txt")
     install_cmds += [
+        "pip install .",
+        "popd",
         "git clone https://github.com/evhub/prisoner.git",
         "git clone https://github.com/evhub/pyston.git",
     ]
-    if py2:
-        install_cmds.append("pip install futures")
-    if ipy:
-        install_cmds += [
-            "pip install pygments",
-            "pip install jupyter",
-        ]
     if not py35:
         install_cmds.append("rm src/cocotest/py35_test.coco")
     install_cmds += [
