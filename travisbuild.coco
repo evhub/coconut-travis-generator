@@ -33,8 +33,6 @@ def cocotravis(main, version):
             "git clone -b develop https://github.com/evhub/coconut.git",
             "pip install ./coconut",
         ]
-    if pypy:
-        install_cmds.append("alias coconut='python -m coconut.main'")
     install_cmds += [
         "git clone https://github.com/evhub/prisoner.git",
         "git clone https://github.com/evhub/pyston.git",
