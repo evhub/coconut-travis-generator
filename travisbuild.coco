@@ -34,7 +34,7 @@ def cocotravis(main, version):
             "pushd coconut",
         ]
     if ipy:
-        install_cmds.append("pip install -r requirements-jupyter.txt")
+        install_cmds.append("pip install -r reqs/requirements-jupyter.txt")
     install_cmds += [
         "pip install .",
         "popd",
